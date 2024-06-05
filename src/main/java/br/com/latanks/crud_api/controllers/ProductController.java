@@ -36,6 +36,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Void> register(@RequestBody @Valid ProductModel data) {
         data.setId(null);
+        data.setActivate(true);
         this.productService.register(data);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

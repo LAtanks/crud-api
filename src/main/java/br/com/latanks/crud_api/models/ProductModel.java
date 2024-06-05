@@ -19,8 +19,14 @@ import lombok.Setter;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
-@AllArgsConstructor
 public class ProductModel {
+
+    public ProductModel(Long id, String name, Integer price_in_cents) {
+        this.id = id;
+        this.name = name;
+        this.price_in_cents = price_in_cents;
+        this.activate = true;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,5 +40,9 @@ public class ProductModel {
     @NotNull
     @Column(name = "price_in_cents", nullable = false)
     private Integer price_in_cents;
+
+  //  @NotNull
+    @Column(name = "activate", nullable = false, updatable = true)
+    private Boolean activate;
 
 }

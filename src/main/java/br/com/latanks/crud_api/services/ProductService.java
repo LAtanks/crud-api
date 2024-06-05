@@ -33,17 +33,24 @@ public class ProductService {
     @Transactional
     public ProductModel register(ProductModel obj) {
         obj.setId(null);
+        obj.setActivate(true);
         return this.productRepository.save(obj);
     }
 
     @Transactional
     public void delete(Long id) {
-        Optional<ProductModel> obj = this.productRepository.findById(id);
-        this.productRepository.delete(obj.get());
+        ProductModel obj = findById(id);
+        obj.setActivate(false);
+    }
+
+    @Transactional ProductModel Desativate(Long id){
+        ProductModel obj = findById(id);
+        obj.setActivate(true);
+        return this.productRepository.save(obj);
     }
 
     private ProductModel findById(Long uuid) {
-        Optional<ProductModel> product = productRepository.findById(uuid);
+        Optional<ProductModel> product = this.productRepository.findById(uuid);
 
         return product.orElseThrow(() -> new RuntimeException("Produto não encontrado, Id: " + uuid));
     }
