@@ -1,5 +1,6 @@
 package br.com.latanks.crud_api.controllers;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,12 @@ public class ProductController {
     public ResponseEntity<List<ProductModel>> ProductsList() {
         var allProducts = this.productService.ProductsList();
         return ResponseEntity.status(HttpStatus.OK).body(allProducts);
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<ProductModel> getProduct(@PathVariable("id") Long id) {
+        var product = this.productService.getProduct(id);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(product);
     }
 
     @PostMapping

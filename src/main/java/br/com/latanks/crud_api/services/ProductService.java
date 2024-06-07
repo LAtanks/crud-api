@@ -1,6 +1,7 @@
 package br.com.latanks.crud_api.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,8 @@ import br.com.latanks.crud_api.repositories.ProductRepository;
 @Service
 public class ProductService {
 
+    private static final String DEFAULT_IMAGE = "https://static.thenounproject.com/png/180604-200.png";
+
     @Autowired
     private ProductRepository productRepository;
 
@@ -20,6 +23,12 @@ public class ProductService {
     public List<ProductModel> ProductsList() {
         var allProducts = this.productRepository.findAll();
         return allProducts;
+    }
+
+    @Transactional
+    public ProductModel getProduct(Long id) {
+        var product = this.findById(id);
+        return product;
     }
 
     @Transactional
@@ -33,6 +42,11 @@ public class ProductService {
     @Transactional
     public ProductModel register(ProductModel obj) {
         obj.setId(null);
+
+        if (Objects.isNull(obj.getImage_url())) {
+            obj.setImage_url(DEFAULT_IMAGE);
+        }
+
         obj.setActivate(true);
         return this.productRepository.save(obj);
     }
@@ -43,7 +57,8 @@ public class ProductService {
         obj.setActivate(false);
     }
 
-    @Transactional ProductModel Desativate(Long id){
+    @Transactional
+    ProductModel Desativate(Long id) {
         ProductModel obj = findById(id);
         obj.setActivate(true);
         return this.productRepository.save(obj);
