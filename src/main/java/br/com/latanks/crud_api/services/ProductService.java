@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import br.com.latanks.crud_api.models.ProductModel;
 import br.com.latanks.crud_api.repositories.ProductRepository;
+import br.com.latanks.crud_api.services.exceptions.NotFoundException;
 
 @Service
 public class ProductService {
@@ -67,6 +68,6 @@ public class ProductService {
     private ProductModel findById(Long uuid) {
         Optional<ProductModel> product = this.productRepository.findById(uuid);
 
-        return product.orElseThrow(() -> new RuntimeException("Produto não encontrado, Id: " + uuid));
+        return product.orElseThrow(() -> new NotFoundException("Identidade não encontrado id: " + uuid));
     }
 }
