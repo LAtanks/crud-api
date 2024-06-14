@@ -3,40 +3,90 @@ package br.com.latanks.crud_api.infra;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.method.MethodValidationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.latanks.crud_api.services.exceptions.NotFoundException;
 
-@Slf4j
+@Slf4j(topic = "GLOBAL_EXCEPTION_HANDLER")
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
-    // @Override
-    @Nullable
+
+    @Value("${server.error.include-exception}")
+    private boolean printStackTrace;
+
+    @Override
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-            HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        return ResponseEntity.unprocessableEntity().body(ex);
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                HttpStatus.UNPROCESSABLE_ENTITY.value(),
+                "Validation error. Check 'errors' field for details.");
+        for (FieldError fieldError : ex.getBindingResult().getFieldErrors()) {
+            errorResponse.addValidationError(fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        return ResponseEntity.unprocessableEntity().body(errorResponse);
     }
 
+    @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<Object> EntityNotFoundException(NotFoundException ex) {
-
-        log.error("Falha em procurar identidade", ex);
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<Object> handleAllUncaughtException(
+            NotFoundException exception,
+            WebRequest request) {
+        final String errorMessage = "Unknown error occurred";
+        log.error(errorMessage, exception);
+        return buildErrorResponse(
+                exception,
+                errorMessage,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                request);
     }
 
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<Object> handleAllUncaughtException(
+            Exception exception,
+            WebRequest request) {
+        final String errorMessage = "Unknown error occurred";
+        log.error(errorMessage, exception);
+        return buildErrorResponse(
+                exception,
+                errorMessage,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                request);
+    }
+
+    private ResponseEntity<Object> buildErrorResponse(
+            Exception exception,
+            HttpStatus httpStatus,
+            WebRequest request) {
+        return buildErrorResponse(exception, exception.getMessage(), httpStatus, request);
+    }
+
+    private ResponseEntity<Object> buildErrorResponse(
+            Exception exception,
+            String message,
+            HttpStatus httpStatus,
+            WebRequest request) {
+        ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message);
+        if (this.printStackTrace) {
+            errorResponse.setStackTrace(ExceptionUtils.getStackTrace(exception));
+        }
+        return ResponseEntity.status(httpStatus).body(errorResponse);
+    }
 }
