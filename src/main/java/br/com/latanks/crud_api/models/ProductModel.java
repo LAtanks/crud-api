@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,11 +36,13 @@ public class ProductModel {
   private Long id;
 
   @NotNull
+  @NotEmpty
   @Column(name = "name", nullable = false)
   private String name;
 
   @NotNull
   @Column(name = "price_in_cents", nullable = false)
+  @Min(value = 500)
   private Integer price_in_cents;
 
   @Column(name = "imagem_url", nullable = true)
