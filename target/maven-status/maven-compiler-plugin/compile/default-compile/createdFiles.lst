@@ -1,1 +1,15 @@
+br\com\latanks\crud_api\models\UserModel.class
+br\com\latanks\crud_api\services\exceptions\NotFoundException.class
+br\com\latanks\crud_api\repositories\UserRepository.class
+br\com\latanks\crud_api\configs\DevToolsConfig.class
+br\com\latanks\crud_api\services\exceptions\DataInvalidationException.class
+br\com\latanks\crud_api\infra\ErrorResponse$ValidationError.class
+br\com\latanks\crud_api\repositories\ProductRepository.class
+br\com\latanks\crud_api\controllers\ProductController.class
 br\com\latanks\crud_api\CrudApiApplication.class
+br\com\latanks\crud_api\controllers\UserController.class
+br\com\latanks\crud_api\models\ProductModel.class
+br\com\latanks\crud_api\infra\ErrorResponse.class
+br\com\latanks\crud_api\infra\GlobalExceptionHandler.class
+br\com\latanks\crud_api\services\ProductService.class
+br\com\latanks\crud_api\services\UserService.class

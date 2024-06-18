@@ -45,16 +45,15 @@ public class ProductService {
     public ProductModel register(ProductModel obj) {
         obj.setId(null);
 
-        if(obj.getName().isEmpty()){
+        if (obj.getName().isEmpty()) {
             throw new DataInvalidationException("Dado não insirido!");
         }
-        if(obj.getPrice_in_cents() < 500)
+        if (obj.getPrice_in_cents() < 500)
             throw new DataInvalidationException("O preço tem que ser maior que R$5,00");
 
         if (Objects.isNull(obj.getImage_url())) {
             obj.setImage_url(DEFAULT_IMAGE);
         }
-
         obj.setActivate(true);
         return this.productRepository.save(obj);
     }

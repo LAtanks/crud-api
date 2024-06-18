@@ -12,6 +12,6 @@ public class NotFoundException extends EntityNotFoundException {
     }
 
     public NotFoundException() {
-        super();
+        super("Dado não encontrado!");
     }
 }

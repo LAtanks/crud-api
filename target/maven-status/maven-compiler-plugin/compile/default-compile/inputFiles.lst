@@ -1,1 +1,14 @@
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\repositories\ProductRepository.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\infra\GlobalExceptionHandler.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\services\UserService.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\services\exceptions\NotFoundException.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\repositories\UserRepository.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\models\ProductModel.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\services\ProductService.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\infra\ErrorResponse.java
 F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\CrudApiApplication.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\models\UserModel.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\controllers\ProductController.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\controllers\UserController.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\services\exceptions\DataInvalidationException.java
+F:\Projetos\crud-api\src\main\java\br\com\latanks\crud_api\configs\DevToolsConfig.java
